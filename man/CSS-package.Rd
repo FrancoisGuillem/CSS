@@ -3,12 +3,10 @@
 \alias{CSS}
 \docType{package}
 \title{
-What the package does (short line)
-~~ package title ~~
+Extract information from an html document with CSS selectors
 }
 \description{
-More about what it does (maybe more than one line)
-~~ A concise (1-5 lines) description of the package ~~
+The package provides functions that facilitate extraction of information from an html document by using css selectors instead of xpath queries.
 }
 \details{
 \tabular{ll}{
@@ -16,27 +14,47 @@ Package: \tab CSS\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
 Date: \tab 2013-01-31\cr
-License: \tab What license is it under?\cr
+License: \tab GPL (>= 2)\cr
 }
-~~ An overview of how to use the package, including the most important ~~
-~~ functions ~~
+The functions of this packages are actually wrapper functions for the package XML. For instance \code{\link{cssApply}} converts a css path in an xpath query and then invokes \code{\link{xpathSApply}}.
 }
 \author{
-Who wrote it
+François Guillem <guillem.francois@gmail.com>
 
-Maintainer: Who to complain to <yourfault@somewhere.net>
-~~ The author and/or maintainer of the package ~~
 }
 \references{
 ~~ Literature or other references for background information ~~
 }
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in ~~
-~~ the R documentation directory ~~
 \keyword{ package }
 \seealso{
 ~~ Optional links to other man pages, e.g. ~~
 ~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
-~~ simple examples of the most important functions ~~
+doc <- "<html>
+<head></head>
+<body>
+  <div id='character1' class='character'>
+    <span class='name'>Mike</span>
+    <span class='level digit'>10</span>
+  </div>
+  <div id='character2' class='character'>
+    <span class='name'>Stan</span>
+  </div>
+</body>
+</html>"
+
+doc <- htmlParse(doc)
+
+# Names of the characters
+cssApply(doc, ".character>.name", cssCharacter)
+
+# Name of character1
+cssApply(doc, "#character1>.name", cssCharacter)
+
+# Level of characters
+cssApply(doc, ".character>.level", cssNumeric)
+
+# character 2 does not have level, we would want to have a NA value instead of nothing
+cssApplyInNodeSet(doc, ".character", ".level", cssNumeric)
 }

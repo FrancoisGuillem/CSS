@@ -1,9 +1,10 @@
 Package: CSS
 Type: Package
-Title: What the package does (short line)
+Title: Extract information from an html document with CSS selectors
 Version: 1.0
 Date: 2013-01-31
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Francois Guillem <guillem.francois@gmail.com>
+Maintainer: Francois Guillem <guillem.francois@gmail.com>
+Description: The package provides functions that facilitate extraction of information from an html document by using css selectors instead of xpath queries.
+License: GPL (>= 2)
+Depends: XML
