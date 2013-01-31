@@ -22,38 +22,38 @@ install_github("CSS", "cuche27")
 USAGE
 =====
 
-library(CSS)
+    library(CSS)
 
-# Let's create a fake html page
-doc <- "<html>
-<head></head>
-<body>
-  <div id='character1' class='character'>
-    <span class='name'>Mike</span>
-    <span class='level digit'>10</span>
-    <a href='http://someurl.com'>Complete profile</a>
-  </div>
-  <div id='character2' class='character'>
-    <span class='name'>Stan</span>
-    <a href='http://someurl2.com'>Complete profile</a>
-  </div>
-</body>
-</html>"
+    # Let's create a fake html page
+    doc <- "<html>
+    <head></head>
+    <body>
+      <div id='character1' class='character'>
+        <span class='name'>Mike</span>
+        <span class='level digit'>10</span>
+        <a href='http://someurl.com'>Complete profile</a>
+      </div>
+      <div id='character2' class='character'>
+        <span class='name'>Stan</span>
+        <a href='http://someurl2.com'>Complete profile</a>
+      </div>
+    </body>
+    </html>"
 
-# parse the html
-doc <- htmlParse(doc)
+    # parse the html
+    doc <- htmlParse(doc)
 
-# Extract the names of the characters
-cssApply(doc, ".character>.name", cssCharacter)
+    # Extract the names of the characters
+    cssApply(doc, ".character>.name", cssCharacter)
 
-# Extract the name of character1
-cssApply(doc, "#character1>.name", cssCharacter)
+    # Extract the name of character1
+    cssApply(doc, "#character1>.name", cssCharacter)
 
-# Urls of the profiles
-cssApply(doc, ".character>a", cssLink)
+    # Urls of the profiles
+    cssApply(doc, ".character>a", cssLink)
 
-# Level of characters
-cssApply(doc, ".character>.level", cssNumeric)
+    # Level of characters
+    cssApply(doc, ".character>.level", cssNumeric)
 
-# character 2 does not have level, we would want to have a NA value instead of nothing
-cssApplyInNodeSet(doc, ".character", ".level", cssNumeric)
+    # character 2 does not have level, we would want to have a NA value instead of nothing
+    cssApplyInNodeSet(doc, ".character", ".level", cssNumeric)
