@@ -9,18 +9,18 @@ of specific information like numbers or urls.
 
 
 INSTALLATION
-============
+------------
 
 In R console, execute the following commands
 
-install.packages("devtools")
-library(devtools)
-install_github("CSS", "cuche27")
+    install.packages("devtools")
+    library(devtools)
+    install_github("CSS", "cuche27")
 
 
 
 USAGE
-=====
+-----
 
     library(CSS)
 
