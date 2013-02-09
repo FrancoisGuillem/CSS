@@ -26,7 +26,7 @@ cssCharacter <- function(node, ...) {
 }
 
 cssToXpath <- function(cssPath, prefix = "//") {
-  cssPath <- gsub(">", " >", cssPath)
+  cssPath <- gsub(" ?> ?", " >", cssPath)
   path <- strsplit(cssPath, " ")[[1]]
   path <- gsub("#","#[@id='", path)
   path <- gsub("\\.","#\\[contains(@class,'", path)

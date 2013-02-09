@@ -40,8 +40,8 @@ A character string representing an xpath query.
 
 }
 \examples{
-cssToXpath(.character>.name")
-cssToXpath(#character1 .name")
+cssToXpath(".character>.name")
+cssToXpath("#character1 .name")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

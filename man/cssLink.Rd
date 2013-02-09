@@ -42,7 +42,7 @@ All these function return a chracter string except \code{cssNumeric} which retur
 %% ~put references to the literature/web site here ~
 }
 \author{
-François Guillem <guillem.francois@gmail.com>
+Francois Guillem <guillem.francois@gmail.com>
 }
 \note{
 %%  ~~further notes~~

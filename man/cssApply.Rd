@@ -37,7 +37,7 @@ If no element in the html document corresponds to the path provided, the functio
 %% ~put references to the literature/web site here ~
 }
 \author{
-François Guillem <guillem_francois@gmail.com>
+Francois Guillem <guillem_francois@gmail.com>
 }
 \note{
 %%  ~~further notes~~
@@ -46,7 +46,7 @@ François Guillem <guillem_francois@gmail.com>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{cssApplyInsideNode}}, \code{\link{cssNumeric}}
+\code{\link{cssApplyInNodeSet}}, \code{\link{cssNumeric}}
 }
 \examples{
 doc <- "<html>

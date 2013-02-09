@@ -16,10 +16,10 @@ Version: \tab 1.0\cr
 Date: \tab 2013-01-31\cr
 License: \tab GPL (>= 2)\cr
 }
-The functions of this packages are actually wrapper functions for the package XML. For instance \code{\link{cssApply}} converts a css path in an xpath query and then invokes \code{\link{xpathSApply}}.
+The functions of this packages are actually wrapper functions for the package XML. For instance \code{\link{cssApply}} converts a css path in an xpath query and then invokes \code{\link[XML]{xpathSApply}}.
 }
 \author{
-François Guillem <guillem.francois@gmail.com>
+Francois Guillem <guillem.francois@gmail.com>
 
 }
 \references{
@@ -27,8 +27,6 @@ François Guillem <guillem.francois@gmail.com>
 }
 \keyword{ package }
 \seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
 doc <- "<html>

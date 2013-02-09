@@ -43,7 +43,7 @@ If no element in the html document corresponds to "path", the function will retu
 %% ~put references to the literature/web site here ~
 }
 \author{
-François Guillem <guillem.francois@gmail.com>
+Francois Guillem <guillem.francois@gmail.com>
 }
 \note{
 %%  ~~further notes~~

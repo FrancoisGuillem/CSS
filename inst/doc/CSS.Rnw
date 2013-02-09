@@ -1,8 +1,11 @@
 \documentclass{article}
 \usepackage[utf8]{inputenx} 
 
+%\VignetteIndexEntry{CSS}
+
 \begin{document}
 \SweaveOpts{concordance=TRUE}
+
 
 \title{Extract data from an html document\\with CSS package}
 \author{François Guillem}
