@@ -19,7 +19,7 @@ An html document parsed with \code{\link{htmlParse}}.
 CSS path
 }
   \item{fun}{
-Function to apply to the selected nodes.
+Function to extract data from the selected nodes. See \code{\link{cssExtract}}
 }
   \item{\dots}{
 Parameters passed to "\code{fun}"
@@ -29,7 +29,7 @@ Parameters passed to "\code{fun}"
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-The result may differ based on the function used. It will generally be a character or numeric vectorwith length equal to the number of nodes selected.
+The result may differ based on the function used. It will generally be a character or numeric vector with length equal to the number of nodes selected.
 
 If no element in the html document corresponds to the path provided, the function will return an empty list.
 }

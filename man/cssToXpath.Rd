@@ -4,7 +4,7 @@
 Translate a cssPath to an xpath.
 }
 \description{
-this function translate a CSS path in an xpath query. It is used by \code{\link{cssApply}} and you generally won't have to use it directly. Nevertheless, it may be useful for debug if \code{\link{cssApply}} does unexpected things.
+this function translates a CSS path in an xpath query. It is used by \code{\link{cssApply}} and you generally won't have to use it directly. Nevertheless, it may be useful for debug if \code{\link{cssApply}} does unexpected things.
 }
 \usage{
 cssToXpath(cssPath, prefix = "//")
@@ -18,26 +18,19 @@ Character. A CSS path
 Character string appended at the beggining of the xpath query. Valid options are "/", "//", "./" and ".//"
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
 A character string representing an xpath query.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+Francois Guillem <guillem.francois@gmail.com>
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-
+\code{\link{cssApply}}, \code{\link{cssApplyInNodeSet}}
 }
 \examples{
 cssToXpath(".character>.name")

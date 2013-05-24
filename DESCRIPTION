@@ -7,4 +7,5 @@ Author: Francois Guillem <guillem.francois@gmail.com>
 Maintainer: Francois Guillem <guillem.francois@gmail.com>
 Description: The package provides functions that facilitate extraction of information from an html document by using css selectors instead of xpath queries.
 License: GPL (>= 2)
-Depends: XML
+Depends: XML, stringr
+Suggests: testthat

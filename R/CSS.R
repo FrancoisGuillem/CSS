@@ -1,4 +1,5 @@
 cssLink <- function(node) {
+  # Pour extraire des liens
   xmlGetAttr(node, name="href")
 }
 
@@ -14,6 +15,14 @@ cssSrc <- function(node) {
   xmlGetAttr(node, name="src")
 }
 
+cssValue <- function(node) {
+  xmlGetAttr(node, name="value")
+}
+
+cssName <- function(node) {
+  xmlGetAttr(node, name="name")
+}
+
 cssNumeric <- function(node, ...) {
   x <- xmlValue(node, ...)
   x <- gsub("[^\\d\\.]", "", x, perl=TRUE)
@@ -21,31 +30,78 @@ cssNumeric <- function(node, ...) {
   x <- as.numeric(x)
 }
 
+cssCharacter <- xmlValue
+
 cssCharacter <- function(node, ...) {
   xmlValue(node, ...)
 }
 
-cssToXpath <- function(cssPath, prefix = "//") {
+cssToXpath <- function(cssPath, prefix="//") {
   cssPath <- gsub(" ?> ?", " >", cssPath)
-  path <- strsplit(cssPath, " ")[[1]]
-  path <- gsub("#","#[@id='", path)
-  path <- gsub("\\.","#\\[contains(@class,'", path)
-  path <- strsplit(path, "#")
-  for(i in 1:length(path)) {
-  	if(path[[i]][1] == "") {path[[i]][1]  <-  "*"} 
-  	if(path[[i]][1] == ">") {path[[i]][1]  <-  ">*"} 
-  	if(length(path[[i]]) > 1) {
-  	  for (j in 2:length(path[[i]])) {
-  	    path[[i]][j] <- gsub("id='(.+)$", "id='\\1']",path[[i]][j])
-  	    path[[i]][j] <- gsub("class,'(.+)$", "class,'\\1')]",path[[i]][j])
-  	  }
-  	}
-  }
-  path <- lapply(path, paste, collapse="")
-  path <- paste(unlist(path), collapse="//")
+  cssPath <- gsub(" *\\[ *", "\\[", cssPath)
+  cssPath <- gsub(" *\\] *", "\\] ", cssPath)
   
-  path <- gsub("/>", "", path)
-  paste(prefix, path, sep ="")
+  el <- str_extract_all(cssPath, ">?[^ ]+(\\[ ?(@[^]]+)+ ?\\])?( |$)")[[1]]
+  
+  path <- sapply(el, function(x) {   
+    elAttrs <- NULL
+    
+    # Is the element a direct child or simply a descendent ?
+    if (str_detect(x, "^>")) {
+      child <- TRUE
+      x <- str_replace(x, "^>", "")
+    } else {
+      child <- FALSE
+    }
+    
+    # Name
+    if (str_detect(x, "^(\\.|#)")) {
+      elName <- "*"
+    } else {
+      # tolower ensures case insensitivity
+      elName <- tolower(str_extract(x, "^((\\w+)|\\*)")) 
+      x <- str_replace(x, "^((\\w+)|\\*)", "")
+    }
+    
+    # attributes (except ID and CLASS)
+    if (str_detect(x, "\\[.+\\]")) {
+      elAttrs <- str_match(x, "\\[(.+)\\]")[2]
+      elAttrs <- str_replace_all(elAttrs, " @", " and @")
+      
+      # Ensure case insensitivity
+      elAttrs <- gsub("@(\\w+)", "@\\L\\1", elAttrs, perl = T)
+      
+      x <- str_replace(x, "\\[.+\\]\\s*", "")
+    }
+    
+    # ID
+    if (str_detect(x, "^#")) {
+      id <- str_match(x, "^#(\\w+)")[2]
+      elAttrs <- c(elAttrs, sprintf("@id='%s'", id))
+    }
+    
+    # classes
+    if (str_detect(x, "^\\.")) {
+      class <- str_match_all(x, "\\.(\\w+)")[[1]][,2]
+      elAttrs <- c(elAttrs, sprintf("contains(concat(' ',normalize-space(translate(@class, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), ' '),' %s ')", tolower(class)))
+    }
+    
+    if(!is.null(elAttrs)) {
+      elAttrs <- paste(elAttrs, collapse=" and ")
+      elAttrs <- sprintf("[%s]", elAttrs)
+    } else {
+      elAttrs <- ""
+    }
+    
+    sprintf("%s%s%s",
+            ifelse(child, "/", "//"),
+            elName,
+            elAttrs)
+  })
+  
+  path[1] <- str_replace(path[1], "^/+", prefix)
+  
+  paste(path, collapse = "")
 }
 
 cssApply <- function(doc, path, fun, ...) {
