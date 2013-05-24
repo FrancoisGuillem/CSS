@@ -1,10 +1,13 @@
-\name{cssLink}
+\name{cssExtract}
 \alias{cssLink}
 \alias{cssNumeric}
 \alias{cssCharacter}
 \alias{cssSrc}
 \alias{cssId}
 \alias{cssClass}
+\alias{cssName}
+\alias{cssValue}
+\alias{cssExtract}
 \title{
 Extract information from an html element
 }
@@ -13,7 +16,7 @@ These function has to be used in \code{\link{cssApply}} and \code{\link{cssApply
 
 \code{cssNumeric} extracts the numeric value of an element, \code{cssCharacter} extracts text. \code{cssLink} extracts the url of a link. 
 
-\code{cssSrc}, \code{cssId}, \code{cssClass} are less usefull and extract respectively the source of an element, its id and its css class.
+\code{cssSrc}, \code{cssId}, \code{cssClass}, \code{cssName} and \code{cssValue} are less usefull and extract respectively the source of an element, its id, its css class, its name and its value (may be usefull for input elements).
 }
 \usage{
 cssLink(node)
@@ -32,23 +35,13 @@ An html element
   Additional arguments passed to \code{\link{xmlValue}}
   }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 All these function return a chracter string except \code{cssNumeric} which returns a Numeric value
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+
 \author{
 Francois Guillem <guillem.francois@gmail.com>
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
 \code{\link{cssApply}}, \code{\link{cssApplyInNodeSet}}
