@@ -16,7 +16,7 @@ doc <- "<html>
 <span class='level'>21</span>
 <a href='http://someurl3.com'>Complete profile</a>
   </div>
-<DIV CLASS='TEST'>insensitive</DIV>
+<DIV CLASS='TEST' name='Hello world'>insensitive</DIV>
 </body>
 </html>"
 
@@ -33,9 +33,9 @@ test_that("Function cssApply extracts desired data.", {
                  "http://someurl3.com"))
   expect_equal(cssApply(doc, ".player>.level", cssNumeric), 
                c(10, 21))
-  expect_equal(cssApply(doc, "*[@id]", cssId),
+  expect_equal(cssApply(doc, "*[id]", cssId),
                c("player1", "player2", "player3"))
-  expect_equal(cssApply(doc, "*[@id @class]", cssId),
+  expect_equal(cssApply(doc, "*[id class]", cssId),
                c("player1", "player2", "player3"))
 })
 
@@ -49,7 +49,7 @@ test_that("functions are case insensitive", {
                "insensitive")
   expect_equal(cssApply(doc, "DIV.test", cssCharacter), 
                "insensitive")
-  expect_equal(cssApply(doc, ".test[@CLASS]", cssCharacter),
+  expect_equal(cssApply(doc, ".test[CLASS]", cssCharacter),
                "insensitive")
   expect_equal(cssApply(doc, "div.test", cssCharacter),
                "insensitive")
@@ -62,12 +62,14 @@ test_that("functions are insensitive to extra spaces", {
                c("Mike", "Stan", "Bruce"))
   expect_equal(cssApply(doc, ".player > .name", cssCharacter), 
                c("Mike", "Stan", "Bruce"))
-  expect_equal(cssApply(doc, "*[ @id]", cssId),
+  expect_equal(cssApply(doc, "*[ id]", cssId),
                c("player1", "player2", "player3"))
-  expect_equal(cssApply(doc, "*[@id ]", cssId),
+  expect_equal(cssApply(doc, "*[id ]", cssId),
                c("player1", "player2", "player3"))
-  expect_equal(cssApply(doc, "*[ @id='player1' ]", cssId),
+  expect_equal(cssApply(doc, "*[ id='player1' ]", cssId),
                c("player1"))
-  expect_equal(cssApply(doc, "*[ @id = 'player1' ]", cssId),
+  expect_equal(cssApply(doc, "*[ id = 'player1' ]", cssId),
                c("player1"))
+  expect_equal(cssApply(doc, "*[ name = 'Hello world' ]", cssCharacter),
+               "insensitive")
 })

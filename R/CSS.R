@@ -41,7 +41,7 @@ cssToXpath <- function(cssPath, prefix="//") {
   cssPath <- gsub(" *\\[ *", "\\[", cssPath)
   cssPath <- gsub(" *\\] *", "\\] ", cssPath)
   
-  el <- str_extract_all(cssPath, ">?[^ ]+(\\[ ?(@[^]]+)+ ?\\])?( |$)")[[1]]
+  el <- str_extract_all(cssPath, ">?[^ ]+(\\[ ?(\\w[^]]+)+ ?\\])?( |$)")[[1]]
   
   path <- sapply(el, function(x) {   
     elAttrs <- NULL
@@ -66,6 +66,8 @@ cssToXpath <- function(cssPath, prefix="//") {
     # attributes (except ID and CLASS)
     if (str_detect(x, "\\[.+\\]")) {
       elAttrs <- str_match(x, "\\[(.+)\\]")[2]
+      elAttrs <- str_replace_all(elAttrs, "^(\\w+)([ =]|$)", "@\\1\\2")
+      elAttrs <- str_replace_all(elAttrs, " (\\w+)([ =]|$)", " @\\1\\2")
       elAttrs <- str_replace_all(elAttrs, " @", " and @")
       
       # Ensure case insensitivity
