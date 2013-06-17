@@ -1,0 +1,14 @@
+This NEWS file summarises the main changes.
+
+        *********************************************
+        **                                         **
+        **   CHANGES IN CSS VERSION 1.0.1          **
+        **                                         **
+        **          On CRAN : 10 Jun 2013          **
+        **                                         **
+        *********************************************
+
+        
+BUG FIXES
+
+    o   cssApply did not work when argument "path" contained a "-"

@@ -25,22 +25,15 @@ Function to extract data from the selected nodes. See \code{\link{cssExtract}}
 Parameters passed to "\code{fun}"
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
 The result may differ based on the function used. It will generally be a character or numeric vector with length equal to the number of nodes selected.
 
 If no element in the html document corresponds to the path provided, the function will return an empty list.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+
 \author{
 Francois Guillem <guillem_francois@gmail.com>
-}
-\note{
-%%  ~~further notes~~
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

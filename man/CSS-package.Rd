@@ -22,12 +22,9 @@ The functions of this packages are actually wrapper functions for the package XM
 Francois Guillem <guillem.francois@gmail.com>
 
 }
-\references{
-~~ Literature or other references for background information ~~
-}
+
 \keyword{ package }
-\seealso{
-}
+
 \examples{
 doc <- "<html>
 <head></head>

@@ -33,21 +33,15 @@ Should be "./" if the first element in relPath has to be the child of the elemen
 Parameters passed to "\code{fun}"
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
 If no element in the html document corresponds to "path", the function will return an empty list. Else it will return a list of length equal to the number of elements selected.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+
 \author{
 Francois Guillem <guillem.francois@gmail.com>
 }
-\note{
-%%  ~~further notes~~
-}
+
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 

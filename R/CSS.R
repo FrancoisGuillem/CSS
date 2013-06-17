@@ -77,14 +77,14 @@ cssToXpath <- function(cssPath, prefix="//") {
     }
     
     # ID
-    if (str_detect(x, "^#")) {
-      id <- str_match(x, "^#(\\w+)")[2]
+    if (str_detect(x, "#")) {
+      id <- str_match(x, "#((\\w|-)+)")[2]
       elAttrs <- c(elAttrs, sprintf("@id='%s'", id))
     }
     
     # classes
-    if (str_detect(x, "^\\.")) {
-      class <- str_match_all(x, "\\.(\\w+)")[[1]][,2]
+    if (str_detect(x, "\\.")) {
+      class <- str_match_all(x, "\\.((\\w|-)+)")[[1]][,2]
       elAttrs <- c(elAttrs, sprintf("contains(concat(' ',normalize-space(translate(@class, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), ' '),' %s ')", tolower(class)))
     }
     
