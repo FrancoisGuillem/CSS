@@ -1,7 +1,7 @@
 Package: CSS
 Type: Package
 Title: Extract information from an html document with CSS selectors
-Version: 1.0.1
+Version: 1.0.2
 Date: 2013-01-31
 Author: Francois Guillem <guillem.francois@gmail.com>
 Maintainer: Francois Guillem <guillem.francois@gmail.com>

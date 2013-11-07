@@ -66,8 +66,8 @@ cssToXpath <- function(cssPath, prefix="//") {
     # attributes (except ID and CLASS)
     if (str_detect(x, "\\[.+\\]")) {
       elAttrs <- str_match(x, "\\[(.+)\\]")[2]
-      elAttrs <- str_replace_all(elAttrs, "^(\\w+)([ =]|$)", "@\\1\\2")
-      elAttrs <- str_replace_all(elAttrs, " (\\w+)([ =]|$)", " @\\1\\2")
+      elAttrs <- str_replace_all(elAttrs, "^([a-zA-Z0-9-]+)([ =]|$)", "@\\1\\2")
+      elAttrs <- str_replace_all(elAttrs, " ([a-zA-Z0-9-]+)([ =]|$)", " @\\1\\2")
       elAttrs <- str_replace_all(elAttrs, " @", " and @")
       
       # Ensure case insensitivity
