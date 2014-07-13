@@ -1,4 +1,4 @@
-#' Convert a html document in data.frame
+#' Converts a html document in data.frame
 #'
 #' This a high level function that facilitate the creation of a data.frame from
 #' an html document
