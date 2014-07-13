@@ -19,9 +19,11 @@
 #' cssToXpath("#character1 .name")
 #' 
 cssToXpath <- function(cssPath, prefix="//") {
+  cssPath <- gsub(":nth-of-type\\( *(-?\\d) *\\)", "[position()=\\1]", cssPath)
   cssPath <- gsub(" ?> ?", " >", cssPath)
   cssPath <- gsub(" *\\[ *", "\\[", cssPath)
   cssPath <- gsub(" *\\] *", "\\] ", cssPath)
+  cssPath <- gsub(" *\\] *\\[", "\\]\\[", cssPath)
   
   el <- str_extract_all(cssPath, ">?[^ ]+(\\[ ?(\\w[^]]+)+ ?\\])?( |$)")[[1]]
   
@@ -85,5 +87,8 @@ cssToXpath <- function(cssPath, prefix="//") {
   
   path[1] <- str_replace(path[1], "^/+", prefix)
   
-  paste(path, collapse = "")
+  path <- paste(path, collapse = "")
+  path <- str_replace(path, "position\\(\\)=", "")
+  path <- str_replace(path, "\\[-", "last()-")
+  path
 }
