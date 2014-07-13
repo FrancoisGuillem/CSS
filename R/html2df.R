@@ -45,9 +45,9 @@ html2df <- function(doc, obsPath, varPath, extractFun=cssCharacter) {
   names(idx) <- names(varPath)
   
   res <- lapply(idx, function(x) {
+    path <- ifelse(varPath[[x]] == ".", ".", cssToXpath(varPath[[x]], ".//"))
     r <- list()
     for (i in 1:length(nodes)) {
-      path <- cssToXpath(varPath[[x]], ".//")
       tmp <- xpathSApply(nodes[[i]], path, extractFun[[x]])
       if(length(tmp) == 0) tmp <- NA
       r[[i]] <- tmp[1]
