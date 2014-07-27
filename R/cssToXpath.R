@@ -19,76 +19,93 @@
 #' cssToXpath("#character1 .name")
 #' 
 cssToXpath <- function(cssPath, prefix="//") {
-  cssPath <- gsub(":nth-of-type\\( *(-?\\d) *\\)", "[position()=\\1]", cssPath)
+  # Removing extra-spaces and adding necessary spaces
   cssPath <- gsub(" ?> ?", " >", cssPath)
   cssPath <- gsub(" *\\[ *", "\\[", cssPath)
   cssPath <- gsub(" *\\] *", "\\] ", cssPath)
   cssPath <- gsub(" *\\] *\\[", "\\]\\[", cssPath)
+  cssPath <- gsub(" +:", ":", cssPath)
   
-  el <- str_extract_all(cssPath, ">?[^ ]+(\\[ ?(\\w[^]]+)+ ?\\])?( |$)")[[1]]
+  # Parsing
+  el <- str_extract_all(cssPath, ">?[^ ]+(\\[ ?(\\w[^]]+)+ ?\\])?(:[()a-zA-Z0-9\\-]+)?( |$)")[[1]]
+  el <- str_trim(el)
   
-  path <- sapply(el, function(x) {   
-    elAttrs <- NULL
-    
-    # Is the element a direct child or simply a descendent ?
-    if (str_detect(x, "^>")) {
-      child <- TRUE
-      x <- str_replace(x, "^>", "")
-    } else {
-      child <- FALSE
+  # Are the elements a direct child or simply a descendent ?
+  child <- str_detect(el, "^>")
+  el <- str_replace(el, "^>", "")
+  
+  # name of the elements
+  elName <- ifelse(str_detect(el, "^(\\.|#|\\*)"), "*", 
+                   tolower(str_extract(el, "^\\w+")))
+  
+  # id of the elements
+  elId <- str_match(el, "#((\\w|-)+)")[,2]
+  
+  # classes of the elements
+  elClasses <- str_match(el, "((\\.(\\w|-)+)+)")[,2]
+  
+  # pseudo classes
+  nthChild <- str_match(el, ":nth-child\\( ?(-? ?\\d+) ?\\)")[,2]
+  nthChild <- ifelse(str_detect(el, ":first-child"), "1", nthChild)
+  nthChild <- ifelse(str_detect(el, ":last-child"), "-1", nthChild)
+  nthLastChild <- str_match(el, ":nth-last-child\\( ?(\\d+) ?\\)")[,2]
+  nthChild <- ifelse(is.na(nthLastChild), nthChild, paste0("-", nthLastChild))
+  
+  nthOfType <- str_match(el, ":nth-of-type\\((-?\\d+)\\)")[,2]
+  nthOfType <- ifelse(str_detect(el, ":first-of-type"), "1", nthOfType)
+  nthOfType <- ifelse(str_detect(el, ":last-of-type"), "-1", nthOfType)
+  nthLastOfType <- str_match(el, ":nth-last-of-type\\( ?(\\d+) ?\\)")[,2]
+  nthOfType <- ifelse(is.na(nthLastOfType), nthOfType, paste0("-", nthLastOfType))
+  
+  el <- str_replace_all(el, ":[^\\[]+($| |\\[)", "\\1")
+  
+  # Other attributes
+  elAttrs <- str_match(el, "\\[(.+)\\] *$")[,2]
+  
+  data.frame(Child=child, Name=elName, Id=elId, Classes=elClasses, 
+             NthChild=nthChild, NthType=nthOfType, Attrs=elAttrs)
+  # Conversion to xpath
+  path <- sapply(1:length(el), function(i) {
+    # basic path
+    res <- paste0(ifelse(child[i], "/", "//"), elName[i])
+    if (!is.na(nthOfType[i])) {
+      res <- sprintf("%s[%s]", res, 
+                     str_replace(nthOfType[i], "- ?(\\d+)", "last()-\\1+1"))
+    }
+    if (!is.na(nthChild[i])) {
+      res <- sprintf("%s/../*[%s]",res, 
+                     str_replace(nthChild[i], "- ?(\\d+)", "last()-\\1+1"))
+      if (elName[i] != "*") res <- sprintf("%s[name()='%s']", res, elName[i])
     }
     
-    # Name
-    if (str_detect(x, "^(\\.|#)")) {
-      elName <- "*"
-    } else {
-      # tolower ensures case insensitivity
-      elName <- tolower(str_extract(x, "^((\\w+)|\\*)")) 
-      x <- str_replace(x, "^((\\w+)|\\*)", "")
+    # Filters
+    cond <- c()
+    # Id
+    if (!is.na(elId[i])) cond <- sprintf("translate(@id, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='%s'", tolower(elId[i]))
+    
+    # Classes
+    if (!is.na(elClasses[i])) {
+      cl <- str_split(elClasses[i], "\\.")[[1]][-1]
+      cond <- c(cond, sprintf("contains(concat(' ',normalize-space(translate(@class, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), ' '),' %s ')",tolower(cl)))
     }
     
-    # attributes (except ID and CLASS)
-    if (str_detect(x, "\\[.+\\]")) {
-      elAttrs <- str_match(x, "\\[(.+)\\]")[2]
-      elAttrs <- str_replace_all(elAttrs, "^([a-zA-Z0-9-]+)([ =]|$)", "@\\1\\2")
-      elAttrs <- str_replace_all(elAttrs, " ([a-zA-Z0-9-]+)([ =]|$)", " @\\1\\2")
-      elAttrs <- str_replace_all(elAttrs, " @", " and @")
+    # Attributes
+    if (!is.na(attrs <- elAttrs[i])) {
+      attrs <- str_replace_all(attrs, "^([a-zA-Z0-9-]+)([ =]|$)", "@\\1\\2")
+      attrs <- str_replace_all(attrs, " ([a-zA-Z0-9-]+)([ =]|$)", " @\\1\\2")
+      attrs <- str_replace_all(attrs, " @", " and @")
       
       # Ensure case insensitivity
-      elAttrs <- gsub("@(\\w+)", "@\\L\\1", elAttrs, perl = T)
-      
-      x <- str_replace(x, "\\[.+\\]\\s*", "")
+      attrs <- gsub("@(\\w+)", "@\\L\\1", attrs, perl = T)
+      cond <- c(cond, attrs)
     }
     
-    # ID
-    if (str_detect(x, "#")) {
-      id <- str_match(x, "#((\\w|-)+)")[2]
-      elAttrs <- c(elAttrs, sprintf("@id='%s'", id))
-    }
+    if (length(cond) > 0) res <- sprintf("%s[%s]", res, 
+                                         paste(cond, collapse=" and "))
     
-    # classes
-    if (str_detect(x, "\\.")) {
-      class <- str_match_all(x, "\\.((\\w|-)+)")[[1]][,2]
-      elAttrs <- c(elAttrs, sprintf("contains(concat(' ',normalize-space(translate(@class, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), ' '),' %s ')", tolower(class)))
-    }
-    
-    if(!is.null(elAttrs)) {
-      elAttrs <- paste(elAttrs, collapse=" and ")
-      elAttrs <- sprintf("[%s]", elAttrs)
-    } else {
-      elAttrs <- ""
-    }
-    
-    sprintf("%s%s%s",
-            ifelse(child, "/", "//"),
-            elName,
-            elAttrs)
+    res
   })
   
-  path[1] <- str_replace(path[1], "^/+", prefix)
-  
-  path <- paste(path, collapse = "")
-  path <- str_replace(path, "position\\(\\)=", "")
-  path <- str_replace(path, "\\[-", "last()-")
-  path
+  path <- paste(path, collapse="")
+  str_replace(path, "^/+", prefix)
 }
