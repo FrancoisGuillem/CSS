@@ -94,3 +94,33 @@ test_that("functions are insensitive to valid punctuations", {
   expect_equal(cssApply(doc, "*[test-attr]", cssCharacter), 
                c("test 3"))
 })
+
+context("Using pseudo classes")
+
+doc <- "<html>
+<head></head>
+<body>
+  <div id='content'>
+    <h1>first child</h1>
+    <p>second child</p>
+    <p>third child</p>
+    <h1>fourth child</h1>
+  </div>
+</body>
+</html>"
+
+doc <- htmlParse(doc)
+
+test_that("pseudo classes work", {
+  expect_equal(cssApply(doc, "p:nth-child(2)", cssCharacter), "second child")
+  expect_equal(cssApply(doc, "h1:first-child", cssCharacter), "first child")
+  expect_equal(cssApply(doc, "h1:last-child", cssCharacter), "fourth child")
+  expect_equal(cssApply(doc, "p:first-child", cssCharacter), list())
+  expect_equal(cssApply(doc, "p:last-child", cssCharacter), list())
+  expect_equal(cssApply(doc, "p:nth-last-child(2)", cssCharacter), "third child")
+  
+  expect_equal(cssApply(doc, "p:nth-of-type(2)", cssCharacter), "third child")
+  expect_equal(cssApply(doc, "p:first-of-type", cssCharacter), "second child")
+  expect_equal(cssApply(doc, "p:last-of-type", cssCharacter), "third child")
+  expect_equal(cssApply(doc, "p:nth-last-of-type(1)", cssCharacter), "third child")
+})
