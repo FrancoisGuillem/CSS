@@ -55,37 +55,45 @@
 #' 
 #' # character 2 does not have level, we would want to have a NA value instead of nothing
 #' cssApplyInNodeSet(doc, ".character", ".level", cssNumeric)
+#' 
+#' @export
 cssLink <- function(node) {
   # Pour extraire des liens
   xmlGetAttr(node, name="href")
 }
 
 #' @rdname cssExtract
+#' @export
 cssClass <- function(node) {
   xmlGetAttr(node, name="class")
 }
 
 #' @rdname cssExtract
+#' @export
 cssId <- function(node) {
   xmlGetAttr(node, name="id")
 }
 
 #' @rdname cssExtract
+#' @export
 cssSrc <- function(node) {
   xmlGetAttr(node, name="src")
 }
 
 #' @rdname cssExtract
+#' @export
 cssValue <- function(node) {
   xmlGetAttr(node, name="value")
 }
 
 #' @rdname cssExtract
+#' @export
 cssName <- function(node) {
   xmlGetAttr(node, name="name")
 }
 
 #' @rdname cssExtract
+#' @export
 cssNumeric <- function(node, ...) {
   x <- xmlValue(node, ...)
   x <- gsub("[^\\d\\.]", "", x, perl=TRUE)
@@ -94,6 +102,7 @@ cssNumeric <- function(node, ...) {
 }
 
 #' @rdname cssExtract
+#' @export
 cssCharacter <- function(node, ...) {
   xmlValue(node, ...)
 }

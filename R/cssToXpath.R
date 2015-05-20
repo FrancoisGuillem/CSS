@@ -1,3 +1,5 @@
+
+
 #' Translate a css path to an xpath.
 #' 
 #' this function translates a CSS path in an xpath query. It is used by
@@ -17,6 +19,8 @@
 #' @examples
 #' cssToXpath(".character>.name")
 #' cssToXpath("#character1 .name")
+#' 
+#' @export
 #' 
 cssToXpath <- function(cssPath, prefix="//") {
   # Removing extra-spaces and adding necessary spaces

@@ -18,7 +18,10 @@
 #' @return a data.frame with number of rows corresponding to the number of 
 #' elements selected by "obsPath" and number of columns equal to the length of
 #' \code{varPath}
-
+#' 
+#' @export
+#' @import XML
+#' @import stringr
 html2df <- function(doc, obsPath, varPath, extractFun=cssCharacter) {
   
   if (is.function(extractFun)) {

@@ -43,6 +43,8 @@
 #' # Name of character1
 #' cssApply(doc, "#character1>.name", cssCharacter)
 #' 
+#' @export
+#' 
 cssApply <- function(doc, path, fun, ...) {
   path <- cssToXpath(path)
   xpathSApply(doc, path, fun, ...)
@@ -102,6 +104,8 @@ cssApply <- function(doc, path, fun, ...) {
 #' 
 #' # character 2 does not have level, we would want to have a NA value instead of nothing
 #' cssApplyInNodeSet(doc, ".character", ".level", cssNumeric)
+#'
+#'@export
 #'
 cssApplyInNodeSet <- function(doc, path, relPath, fun, prefix = "./", ...) {
   path <- cssToXpath(path)
