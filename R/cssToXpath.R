@@ -27,7 +27,7 @@ cssToXpath <- function(cssPath, prefix="//") {
   cssPath <- gsub(" +:", ":", cssPath)
   
   # Parsing
-  el <- str_extract_all(cssPath, ">?[^ ]+(\\[ ?(\\w[^]]+)+ ?\\])?(:[()a-zA-Z0-9\\-]+)?( |$)")[[1]]
+  el <- str_extract_all(cssPath, ">?[^\\[ ]+(\\[ ?(\\w[^\\]]+)+ ?\\])?(:[()a-zA-Z0-9\\-]+)?( |$)")[[1]]
   el <- str_trim(el)
   
   # Are the elements a direct child or simply a descendent ?
